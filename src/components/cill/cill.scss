@@ -1,0 +1,30 @@
+.cill{
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 67, 67, 0.721);
+  border-radius: 10px;
+  margin: 5px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.tile{
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #00000080;
+  border-radius: 10px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.tile2{
+  background: #11ff00c0;
+}
