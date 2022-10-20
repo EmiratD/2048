@@ -10,9 +10,13 @@ const Bord = (props) => {
   let mas = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [0, 0, 2, 0],
+    [0, 0, 0, 0],
     [0, 0, 0, 0],
   ];
+
+  let score = 0;
+  let rows = 4;
+  let columns = 4;
 
   const [arr, setArr] = useState(mas);
 
@@ -32,39 +36,58 @@ const Bord = (props) => {
     })
   );
 
-  // рандоные появление цифр
+  // // рандоиные месио и число 2 или 4
   const getRandomNum = () => {
     let newMatrix = cloneDeep(arr);
-    createRandomNum(newMatrix);
-    createRandomNum(newMatrix);
-    setArr(newMatrix);
-    console.log(newMatrix);
-  };
-  // рандоиные месио и число 2 или 4
-  const createRandomNum = (newMatrix) => {
-    let added = false;
-    let gridFull = false;
-    let go = 0;
-    while (!added) {
-      if (gridFull) {
-        break;
-      }
 
-      let rand1 = Math.floor(Math.random() * 4);
-      let rand2 = Math.floor(Math.random() * 4);
-      go++;
-      if (newMatrix[rand1][rand2] === 0) {
-        newMatrix[rand1][rand2] = Math.random() > 0.5 ? 2 : 4;
-        added = true;
+    let rand1 = Math.floor(Math.random() * 4);
+    let rand2 = Math.floor(Math.random() * 4);
+    if (newMatrix[rand1][rand2] === 0) {
+      newMatrix[rand1][rand2] = Math.random() > 0.1 ? 2 : 4;
+    }
+    setArr(newMatrix);
+  };
+
+  // слайд внутри строки
+  function slide(row) {
+    row = row.filter((num) => num != 0);
+    for (let i = 0; i < row.length - 1; i++) {
+      if (row[i] == row[i + 1]) {
+        row[i] *= 2;
+        row[i + 1] = 0;
+        score += row[i];
       }
     }
-  };
+    row = row.filter((num) => num != 0);
+    while (row.length < columns) {
+      row.push(0);
+    }
+    return row;
+  }
 
-  useEffect(() => {getRandomNum()}, []);
+  function Left() {
+    for (let r = 0; r < rows; r++) {
+      let row = arr[r];
+      row = slide(row);
+      arr[r] = row;
+    }
+    setArr(arr);
+  }
 
-  return <div className="bord" onClick={()=>{
-    
-  }}>{arrTile}</div>;
+  return (
+    <>
+      <div className="bord">{arrTile}</div>
+      <button
+        onClick={() => {
+          Left();
+          getRandomNum();
+          getRandomNum();
+        }}
+      >
+        left
+      </button>
+    </>
+  );
 };
 
 export default Bord;
