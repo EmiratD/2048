@@ -14,7 +14,7 @@ const Bord = (props) => {
     [0, 0, 0, 0],
   ];
 
-  let score = 0;
+  
   let rows = 4;
   let columns = 4;
 
@@ -36,8 +36,7 @@ const Bord = (props) => {
     })
   );
 
-
-  //  генерация случайного места 
+  //  генерация случайного места и цифр
   const creatNum = (matrix) => {
     let rand1 = Math.floor(Math.random() * 4);
     let rand2 = Math.floor(Math.random() * 4);
@@ -53,14 +52,15 @@ const Bord = (props) => {
     setArr(newBord);
   };
 
-  const start = (bord) => {
-    let newBord = cloneDeep(bord);
-    creatNum(newBord);
-    creatNum(newBord);
-    setArr(newBord);
+  // start
+  const start = () => {
+    let startBord = cloneDeep(mas);
+    creatNum(startBord);
+    creatNum(startBord);
+    setArr(startBord);
   };
 
-  // слайд внутри строки
+  // слайд и рассчет в нутри одной строки
   function slide(row) {
     row = row.filter((num) => num != 0);
     for (let i = 0; i < row.length - 1; i++) {
@@ -79,6 +79,7 @@ const Bord = (props) => {
 
   function Left(bord) {
     let newBord = cloneDeep(bord);
+    // проходимся по строкам
     for (let r = 0; r < rows; r++) {
       let row = newBord[r];
       row = slide(row);
@@ -93,6 +94,7 @@ const Bord = (props) => {
   function Right(bord) {
     let newBord = cloneDeep(bord);
     for (let r = 0; r < rows; r++) {
+      // разворачмывем строки
       let row = newBord[r];
       row.reverse();
       row = slide(row);
@@ -106,6 +108,7 @@ const Bord = (props) => {
   function Up(bord) {
     let newBord = cloneDeep(bord);
     for (let c = 0; c < columns; c++) {
+      //  меняем значение элементов строк и сталбцов
       let row = [newBord[0][c], newBord[1][c], newBord[2][c], newBord[3][c]];
       row = slide(row);
       for (let r = 0; r < rows; r++) {
@@ -121,6 +124,7 @@ const Bord = (props) => {
     let newBord = cloneDeep(bord);
     for (let c = 0; c < columns; c++) {
       let row = [newBord[0][c], newBord[1][c], newBord[2][c], newBord[3][c]];
+      // разворачиваем новые строки
       row.reverse();
       row = slide(row);
       row.reverse();
@@ -151,7 +155,8 @@ const Bord = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="game">
+      <button className="btn start" onClick={()=>{start(arr)}}>restar</button>
       <div className="bord">{arrTile}</div>
       <div className="play-btn">
         <button className="btn" onClick={() => {Up(arr);}}>&#8593;</button>

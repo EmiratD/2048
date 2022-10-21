@@ -1,3 +1,11 @@
+.game{
+  width: 400px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .bord{
   width: 400px;
   height: 400px;
@@ -7,7 +15,7 @@
   flex-wrap: wrap;
   display: flex;
   padding: 5px;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 .play-btn{
   width: 200px;
@@ -18,8 +26,36 @@
   align-items: center;
 }
 .left-rihgt{
-
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
-.btn{
 
+.btn{
+  width: 35px;
+  height: 35px;
+  background: #2d668a;
+  border: 1px solid #3e3ce6a4;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  align-items: center;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
+}
+
+.btn:hover,
+.btn:active {
+  background-color: initial;
+  background-position: 0 0;
+}
+
+.btn:active {
+  opacity: .5;
+}
+
+.start{
+  width: 70px;
 }
