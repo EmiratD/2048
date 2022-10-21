@@ -63,7 +63,7 @@ const Bord = (props) => {
       row.push(0);
     }
     return row;
-  }
+  };
 
   function Left() {
     for (let r = 0; r < rows; r++) {
@@ -72,7 +72,41 @@ const Bord = (props) => {
       arr[r] = row;
     }
     setArr(arr);
-  }
+  };
+
+  function Right() {
+    for (let r = 0; r < rows; r++) {
+      let row = arr[r];
+      row.reverse();
+      row = slide(row);
+      arr[r] = row.reverse();
+    }
+    setArr(arr);
+  };
+
+  function Up() {
+    for (let c = 0; c < columns; c++) {
+      let row = [arr[0][c], arr[1][c], arr[2][c], arr[3][c]];
+      row = slide(row);
+      for (let r = 0; r < rows; r++) {
+        arr[r][c] = row[r];
+      }
+    }
+    setArr(arr);
+  };
+
+  function Down() {
+    for (let c = 0; c < columns; c++) {
+      let row = [arr[0][c], arr[1][c], arr[2][c], arr[3][c]];
+      row.reverse();
+      row = slide(row);
+      row.reverse();
+      for (let r = 0; r < rows; r++) {
+        arr[r][c] = row[r];
+      }
+    }
+    setArr(arr);
+  };
 
   return (
     <>
@@ -85,6 +119,34 @@ const Bord = (props) => {
         }}
       >
         left
+      </button>
+      <button
+        onClick={() => {
+          Right();
+          getRandomNum();
+          getRandomNum();
+        }}
+      >
+        right
+      </button>
+
+      <button
+        onClick={() => {
+          Up();
+          getRandomNum();
+          getRandomNum();
+        }}
+      >
+        up
+      </button>
+      <button
+        onClick={() => {
+          Down();
+          getRandomNum();
+          getRandomNum();
+        }}
+      >
+        down
       </button>
     </>
   );
