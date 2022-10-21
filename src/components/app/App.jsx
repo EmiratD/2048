@@ -1,6 +1,6 @@
 import Bord from '../bord/Bord';
 import './App.scss';
-import Cill from '../cill/Cill';
+
 
 
 function App() {

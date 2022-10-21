@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import cloneDeep from "lodash.clonedeep";
+import WinModal from "../winModal/WinModal";
 
 import Cill from "../cill/Cill";
 
@@ -17,6 +18,7 @@ const Bord = (props) => {
   let columns = 4;
 
   const [arr, setArr] = useState(mas);
+  const [win, setWin] = useState(false);
 
   // рендер плиток
   const arrTile = [];
@@ -33,6 +35,21 @@ const Bord = (props) => {
       );
     })
   );
+
+  const [score, setScore] = useState(0);
+  const result = (arr) => {
+    let sum = 0;
+    arr.map((el) =>
+      el.map((item) => {
+        if (item == 2048) {
+          setWin(true);
+        } else {
+          sum += item;
+        }
+      })
+    );
+    setScore(sum);
+  };
 
   //  генерация случайного места и цифр
   const creatNum = (matrix) => {
@@ -51,8 +68,8 @@ const Bord = (props) => {
   };
 
   // start
-  const start = () => {
-    let startBord = cloneDeep(mas);
+  const start = (bord) => {
+    let startBord = cloneDeep(bord);
     creatNum(startBord);
     creatNum(startBord);
     setArr(startBord);
@@ -145,15 +162,8 @@ const Bord = (props) => {
     }
   };
 
-  const [score, setScore] = useState(0);
-  const result = (arr) => {
-    let sum = 0;
-    arr.map((el) => el.map((item) => (sum += item)));
-    setScore(sum);
-  };
-
   useEffect(() => {
-    start(arr);
+    start(mas);
   }, []);
 
   useEffect(() => {
@@ -162,16 +172,24 @@ const Bord = (props) => {
 
   return (
     <div className="game">
+      {win ? (
+        <WinModal
+          fn={() => {
+            start(mas);
+            setWin(false);
+          }}
+        />
+      ) : null}
       <div className="result-restar">
-      <div className="score">score: {score}</div>
-      <button
-        className="btn start"
-        onClick={() => {
-          start(arr);
-        }}
-      >
-        restar
-      </button>
+        <div className="score">score: {score}</div>
+        <button
+          className="btn start"
+          onClick={() => {
+            start(mas);
+          }}
+        >
+          restar
+        </button>
       </div>
       <div className="bord">{arrTile}</div>
       <div className="play-btn">

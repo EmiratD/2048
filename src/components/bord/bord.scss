@@ -10,7 +10,7 @@
   width: 400px;
   height: 400px;
   background: #999ea7;
-  border: 3px solid #3e3ce6a4;
+  border: 3px solid rgba(254, 138, 44, 0.721);
   border-radius: 10px;
   flex-wrap: wrap;
   display: flex;
@@ -60,7 +60,7 @@
 }
 .score{
   padding: 5px;
-  background: rgba(255, 67, 67, 0.721);
+  background: rgba(254, 138, 44, 0.721);
   border-radius: 10px;
   color: #fff;
 }
