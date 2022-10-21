@@ -36,16 +36,28 @@ const Bord = (props) => {
     })
   );
 
-  // // рандоиные месио и число 2 или 4
-  const getRandomNum = () => {
-    let newMatrix = cloneDeep(arr);
 
+  //  генерация случайного места 
+  const creatNum = (matrix) => {
     let rand1 = Math.floor(Math.random() * 4);
     let rand2 = Math.floor(Math.random() * 4);
-    if (newMatrix[rand1][rand2] === 0) {
-      newMatrix[rand1][rand2] = Math.random() > 0.1 ? 2 : 4;
+    if (matrix[rand1][rand2] === 0) {
+      return matrix[rand1][rand2] = Math.random() > 0.1 ? 2 : 4;
     }
-    setArr(newMatrix);
+    return null;
+  }
+  // разметить число
+  const getRandomNum = (bord) => {
+    let newBord = cloneDeep(bord);
+    creatNum(newBord);
+    setArr(newBord);
+  };
+
+  const start = (bord) => {
+    let newBord = cloneDeep(bord);
+    creatNum(newBord);
+    creatNum(newBord);
+    setArr(newBord);
   };
 
   // слайд внутри строки
@@ -63,92 +75,93 @@ const Bord = (props) => {
       row.push(0);
     }
     return row;
-  };
+  }
 
-  function Left() {
+  function Left(bord) {
+    let newBord = cloneDeep(bord);
     for (let r = 0; r < rows; r++) {
-      let row = arr[r];
+      let row = newBord[r];
       row = slide(row);
-      arr[r] = row;
+      newBord[r] = row;
     }
-    setArr(arr);
-  };
+    if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
+      getRandomNum(newBord);
+    }
 
-  function Right() {
+  }
+
+  function Right(bord) {
+    let newBord = cloneDeep(bord);
     for (let r = 0; r < rows; r++) {
-      let row = arr[r];
+      let row = newBord[r];
       row.reverse();
       row = slide(row);
-      arr[r] = row.reverse();
+      newBord[r] = row.reverse();
     }
-    setArr(arr);
-  };
+    if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
+      getRandomNum(newBord);
+    }
+  }
 
-  function Up() {
+  function Up(bord) {
+    let newBord = cloneDeep(bord);
     for (let c = 0; c < columns; c++) {
-      let row = [arr[0][c], arr[1][c], arr[2][c], arr[3][c]];
+      let row = [newBord[0][c], newBord[1][c], newBord[2][c], newBord[3][c]];
       row = slide(row);
       for (let r = 0; r < rows; r++) {
-        arr[r][c] = row[r];
+        newBord[r][c] = row[r];
       }
     }
-    setArr(arr);
-  };
+    if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
+      getRandomNum(newBord);
+    }
+  }
 
-  function Down() {
+  function Down(bord) {
+    let newBord = cloneDeep(bord);
     for (let c = 0; c < columns; c++) {
-      let row = [arr[0][c], arr[1][c], arr[2][c], arr[3][c]];
+      let row = [newBord[0][c], newBord[1][c], newBord[2][c], newBord[3][c]];
       row.reverse();
       row = slide(row);
       row.reverse();
       for (let r = 0; r < rows; r++) {
-        arr[r][c] = row[r];
+        newBord[r][c] = row[r];
       }
     }
-    setArr(arr);
+    if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
+      getRandomNum(newBord);
+    }
+  }
+
+  
+  document.onkeydown = (e) => {
+    if (e.keyCode == 37) {
+      Left(arr);
+    } else if (e.keyCode == 38) {
+      Up(arr);
+    } else if (e.keyCode == 39) {
+      Right(arr);
+    } else if (e.keyCode == 40) {
+      Down(arr);
+    }
   };
+  
+  useEffect(()=>{
+    start(arr);
+  }, []);
 
   return (
-    <>
+    <div>
       <div className="bord">{arrTile}</div>
-      <button
-        onClick={() => {
-          Left();
-          getRandomNum();
-          getRandomNum();
-        }}
-      >
-        left
-      </button>
-      <button
-        onClick={() => {
-          Right();
-          getRandomNum();
-          getRandomNum();
-        }}
-      >
-        right
-      </button>
-
-      <button
-        onClick={() => {
-          Up();
-          getRandomNum();
-          getRandomNum();
-        }}
-      >
-        up
-      </button>
-      <button
-        onClick={() => {
-          Down();
-          getRandomNum();
-          getRandomNum();
-        }}
-      >
-        down
-      </button>
-    </>
+      <div className="play-btn">
+        <button className="btn" onClick={() => {Up(arr);}}>&#8593;</button>
+        <div className="left-rihgt">
+          <button className="btn"  onClick={() => {Left(arr);}}>&#8592;</button>
+          <button className="btn" onClick={() => {Right(arr);}}>&#8594;</button>
+        </div>
+        <button className="btn" onClick={() => {Down(arr);}}>&#8595;</button>
+      </div>
+    </div>
   );
 };
 
