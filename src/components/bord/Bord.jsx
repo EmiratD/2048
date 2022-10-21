@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cloneDeep from "lodash.clonedeep";
 
 import Cill from "../cill/Cill";
@@ -14,7 +13,6 @@ const Bord = (props) => {
     [0, 0, 0, 0],
   ];
 
-  
   let rows = 4;
   let columns = 4;
 
@@ -41,10 +39,10 @@ const Bord = (props) => {
     let rand1 = Math.floor(Math.random() * 4);
     let rand2 = Math.floor(Math.random() * 4);
     if (matrix[rand1][rand2] === 0) {
-      return matrix[rand1][rand2] = Math.random() > 0.1 ? 2 : 4;
+      return (matrix[rand1][rand2] = Math.random() > 0.1 ? 2 : 4);
     }
     return null;
-  }
+  };
   // разметить число
   const getRandomNum = (bord) => {
     let newBord = cloneDeep(bord);
@@ -67,7 +65,6 @@ const Bord = (props) => {
       if (row[i] == row[i + 1]) {
         row[i] *= 2;
         row[i + 1] = 0;
-        score += row[i];
       }
     }
     row = row.filter((num) => num != 0);
@@ -88,7 +85,6 @@ const Bord = (props) => {
     if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
       getRandomNum(newBord);
     }
-
   }
 
   function Right(bord) {
@@ -137,7 +133,6 @@ const Bord = (props) => {
     }
   }
 
-  
   document.onkeydown = (e) => {
     if (e.keyCode == 37) {
       Left(arr);
@@ -149,22 +144,71 @@ const Bord = (props) => {
       Down(arr);
     }
   };
-  
-  useEffect(()=>{
+
+  const [score, setScore] = useState(0);
+  const result = (arr) => {
+    let sum = 0;
+    arr.map((el) => el.map((item) => (sum += item)));
+    setScore(sum);
+  };
+
+  useEffect(() => {
     start(arr);
   }, []);
 
+  useEffect(() => {
+    result(arr);
+  }, [arr]);
+
   return (
     <div className="game">
-      <button className="btn start" onClick={()=>{start(arr)}}>restar</button>
+      <div className="result-restar">
+      <div className="score">score: {score}</div>
+      <button
+        className="btn start"
+        onClick={() => {
+          start(arr);
+        }}
+      >
+        restar
+      </button>
+      </div>
       <div className="bord">{arrTile}</div>
       <div className="play-btn">
-        <button className="btn" onClick={() => {Up(arr);}}>&#8593;</button>
+        <button
+          className="btn"
+          onClick={() => {
+            Up(arr);
+          }}
+        >
+          &#8593;
+        </button>
         <div className="left-rihgt">
-          <button className="btn"  onClick={() => {Left(arr);}}>&#8592;</button>
-          <button className="btn" onClick={() => {Right(arr);}}>&#8594;</button>
+          <button
+            className="btn"
+            onClick={() => {
+              Left(arr);
+            }}
+          >
+            &#8592;
+          </button>
+          <button
+            className="btn"
+            onClick={() => {
+              Right(arr);
+            }}
+          >
+            &#8594;
+          </button>
         </div>
-        <button className="btn" onClick={() => {Down(arr);}}>&#8595;</button>
+        <button
+          className="btn"
+          onClick={() => {
+            Down(arr);
+          }}
+        >
+          &#8595;
+        </button>
       </div>
     </div>
   );

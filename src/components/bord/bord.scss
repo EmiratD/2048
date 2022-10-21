@@ -9,7 +9,7 @@
 .bord{
   width: 400px;
   height: 400px;
-  background: #706969;
+  background: #999ea7;
   border: 3px solid #3e3ce6a4;
   border-radius: 10px;
   flex-wrap: wrap;
@@ -46,16 +46,24 @@
   font-size: 20px;
 }
 
-.btn:hover,
-.btn:active {
-  background-color: initial;
-  background-position: 0 0;
+.btn:hover{
+  background:rgb(7, 0, 137);
+  border: 1px solid rgba(255, 67, 67, 0.721);
 }
 
 .btn:active {
   opacity: .5;
 }
-
+.result-restar{
+  width: 400px;
+  display: flex;justify-content: space-between;
+}
+.score{
+  padding: 5px;
+  background: rgba(255, 67, 67, 0.721);
+  border-radius: 10px;
+  color: #fff;
+}
 .start{
   width: 70px;
 }
