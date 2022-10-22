@@ -13,6 +13,12 @@
   margin: 4px;
   border: 1px solid rgba(254, 138, 44, 0.721);
 }
+@media screen and (max-width: 420px) {
+  .tile{
+    width: 65px;
+    height: 65px;
+  }
+}
 
 .tile2 {
   background-color: #70bdf0;
