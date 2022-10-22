@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import cloneDeep from "lodash.clonedeep";
-import WinModal from "../winModal/WinModal";
 
-import Cill from "../cill/Cill";
+import Tile from "../tile/Tile";
+import WinModal from "../winModal/WinModal";
+import GameOverModal from "../gameOverModal/GameOverModal";
+import ScoreStart from "../scoreStart/ScoreStart";
+import GameBtn from "../gameBtn/GameBtn";
 
 import "./bord.scss";
 
-const Bord = (props) => {
+const Bord = () => {
   let mas = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
@@ -17,8 +20,17 @@ const Bord = (props) => {
   let rows = 4;
   let columns = 4;
 
+  // изменение борда
   const [arr, setArr] = useState(mas);
+
+  // проверка на победу
   const [win, setWin] = useState(false);
+
+  // проверка на поражение
+  const [goUp, setGoUp] = useState(false);
+  const [goRight, setGoRight] = useState(false);
+  const [goLeft, setGoLeft] = useState(false);
+  const [goDown, setGoDown] = useState(false);
 
   // рендер плиток
   const arrTile = [];
@@ -26,7 +38,7 @@ const Bord = (props) => {
     el1.map((el2, idx2) => {
       const value = el2 === 0 ? null : el2;
       arrTile.push(
-        <Cill
+        <Tile
           cName={`tile tile${el2}`}
           id={`${idx1}-${idx2}`}
           vel={value}
@@ -36,12 +48,13 @@ const Bord = (props) => {
     })
   );
 
+  // результат
   const [score, setScore] = useState(0);
   const result = (arr) => {
     let sum = 0;
     arr.map((el) =>
       el.map((item) => {
-        if (item == 2048) {
+        if (item === 2048) {
           setWin(true);
         } else {
           sum += item;
@@ -51,12 +64,12 @@ const Bord = (props) => {
     setScore(sum);
   };
 
-  //  генерация случайного места и цифр
-  const creatNum = (matrix) => {
+  // генерация случайного места и цифр
+  const creatNum = (bord) => {
     let rand1 = Math.floor(Math.random() * 4);
     let rand2 = Math.floor(Math.random() * 4);
-    if (matrix[rand1][rand2] === 0) {
-      return (matrix[rand1][rand2] = Math.random() > 0.1 ? 2 : 4);
+    if (bord[rand1][rand2] === 0) {
+      return (bord[rand1][rand2] = Math.random() > 0.1 ? 2 : 4);
     }
     return null;
   };
@@ -67,7 +80,7 @@ const Bord = (props) => {
     setArr(newBord);
   };
 
-  // start
+  // обнуление борда
   const start = (bord) => {
     let startBord = cloneDeep(bord);
     creatNum(startBord);
@@ -77,21 +90,21 @@ const Bord = (props) => {
 
   // слайд и рассчет в нутри одной строки
   function slide(row) {
-    row = row.filter((num) => num != 0);
+    row = row.filter((num) => num !== 0);
     for (let i = 0; i < row.length - 1; i++) {
-      if (row[i] == row[i + 1]) {
+      if (row[i] === row[i + 1]) {
         row[i] *= 2;
         row[i + 1] = 0;
       }
     }
-    row = row.filter((num) => num != 0);
+    row = row.filter((num) => num !== 0);
     while (row.length < columns) {
       row.push(0);
     }
     return row;
   }
 
-  function Left(bord) {
+  function left(bord) {
     let newBord = cloneDeep(bord);
     // проходимся по строкам
     for (let r = 0; r < rows; r++) {
@@ -101,10 +114,13 @@ const Bord = (props) => {
     }
     if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
       getRandomNum(newBord);
+      setGoLeft(false);
+    } else {
+      setGoLeft(true);
     }
   }
 
-  function Right(bord) {
+  function right(bord) {
     let newBord = cloneDeep(bord);
     for (let r = 0; r < rows; r++) {
       // разворачмывем строки
@@ -115,10 +131,13 @@ const Bord = (props) => {
     }
     if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
       getRandomNum(newBord);
+      setGoRight(false);
+    } else {
+      setGoRight(true);
     }
   }
 
-  function Up(bord) {
+  function up(bord) {
     let newBord = cloneDeep(bord);
     for (let c = 0; c < columns; c++) {
       //  меняем значение элементов строк и сталбцов
@@ -130,10 +149,13 @@ const Bord = (props) => {
     }
     if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
       getRandomNum(newBord);
+      setGoUp(false);
+    } else {
+      setGoUp(true);
     }
   }
 
-  function Down(bord) {
+  function down(bord) {
     let newBord = cloneDeep(bord);
     for (let c = 0; c < columns; c++) {
       let row = [newBord[0][c], newBord[1][c], newBord[2][c], newBord[3][c]];
@@ -147,18 +169,21 @@ const Bord = (props) => {
     }
     if (JSON.stringify(bord) !== JSON.stringify(newBord)) {
       getRandomNum(newBord);
+      setGoDown(false);
+    } else {
+      setGoDown(true);
     }
   }
 
   document.onkeydown = (e) => {
-    if (e.keyCode == 37) {
-      Left(arr);
-    } else if (e.keyCode == 38) {
-      Up(arr);
-    } else if (e.keyCode == 39) {
-      Right(arr);
-    } else if (e.keyCode == 40) {
-      Down(arr);
+    if (e.keyCode === 37) {
+      left(arr);
+    } else if (e.keyCode === 38) {
+      up(arr);
+    } else if (e.keyCode === 39) {
+      right(arr);
+    } else if (e.keyCode === 40) {
+      down(arr);
     }
   };
 
@@ -180,54 +205,22 @@ const Bord = (props) => {
           }}
         />
       ) : null}
-      <div className="result-restar">
-        <div className="score">score: {score}</div>
-        <button
-          className="btn start"
-          onClick={() => {
+      {goDown && goLeft && goRight && goUp ? (
+        <GameOverModal
+          fn={() => {
             start(mas);
+            setGoDown(false);
           }}
-        >
-          restar
-        </button>
-      </div>
+        />
+      ) : null}
+      <ScoreStart
+        start={() => {
+          start(mas);
+        }}
+        score={score}
+      />
       <div className="bord">{arrTile}</div>
-      <div className="play-btn">
-        <button
-          className="btn"
-          onClick={() => {
-            Up(arr);
-          }}
-        >
-          &#8593;
-        </button>
-        <div className="left-rihgt">
-          <button
-            className="btn"
-            onClick={() => {
-              Left(arr);
-            }}
-          >
-            &#8592;
-          </button>
-          <button
-            className="btn"
-            onClick={() => {
-              Right(arr);
-            }}
-          >
-            &#8594;
-          </button>
-        </div>
-        <button
-          className="btn"
-          onClick={() => {
-            Down(arr);
-          }}
-        >
-          &#8595;
-        </button>
-      </div>
+      <GameBtn up={up} left={left} right={right} down={down} arr={arr} />
     </div>
   );
 };
