@@ -15,6 +15,9 @@
   align-items: center;
 }
 @media screen and (max-width: 400px) {
+  .App {
+    height: 500px;
+  }
   .game{
     width: 320px;
   }
