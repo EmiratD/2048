@@ -67,13 +67,18 @@ const App = () => {
 
   // генерация случайного места и цифр
   const creatNum = (bord) => {
-    let rand1 = Math.floor(Math.random() * 4);
-    let rand2 = Math.floor(Math.random() * 4);
-    if (bord[rand1][rand2] === 0) {
-      return (bord[rand1][rand2] = Math.random() > 0.1 ? 2 : 4);
+    let found = false;
+    // цикл работает до тех пор пока не найдет потходящию ячейку
+    while (!found) {
+      let r = Math.floor(Math.random() * rows);
+      let c = Math.floor(Math.random() * columns);
+      if (bord[r][c] == 0) {
+        bord[r][c] = 2;
+        found = true;
+      }
     }
-    return null;
   };
+
   // разметить число
   const getRandomNum = (bord) => {
     let newBord = cloneDeep(bord);
@@ -227,14 +232,5 @@ const App = () => {
     </div>
   );
 };
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <Bord>
-//       </Bord>
-//     </div>
-//   );
-// }
 
 export default App;

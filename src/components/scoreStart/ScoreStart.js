@@ -9,7 +9,7 @@ function ScoreStart({start, score}) {
       className="start"
       onClick={start}
     >
-      restar
+      restart
     </button>
   </div>
   );

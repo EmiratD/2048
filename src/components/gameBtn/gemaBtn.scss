@@ -12,6 +12,9 @@
   justify-content: space-between;
 }
 .btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 35px;
   height: 35px;
   background: #2d668a;
