@@ -4,8 +4,9 @@
   background: #999ea7;
   border: 3px solid rgba(254, 138, 44, 0.721);
   border-radius: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   flex-wrap: wrap;
-  display: flex;
   padding: 5px;
   margin: 20px 0;
 }
