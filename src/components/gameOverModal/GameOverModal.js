@@ -3,7 +3,7 @@ import './gameOverModal.scss'
 
 function GameOverModal({fn}) {
   return (
-    <div className='modal'>
+    <div className='modal-lose'>
       <div className='lose'>game over :(</div>
       <button className='modal-btn' onClick={fn}>try again</button>
     </div>
